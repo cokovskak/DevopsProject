@@ -21,7 +21,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: Build Postgre Image
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/postgre:latest -f DockerDB/Dockerfile .
+      run: docker build -t kristina212006/postgre:latest -f DockerDB/Dockerfile .
       working-directory: .
         
     - name: Build App Image
