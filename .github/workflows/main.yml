@@ -28,7 +28,7 @@ jobs:
       run: docker build -t ${{ secrets.DOCKER_USERNAME }}/app:latest .
 
     - name: Push App image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/postgre:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/app:latest
 
     - name: Push Postgre Image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/postgre:latest
