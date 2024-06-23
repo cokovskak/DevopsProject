@@ -21,17 +21,17 @@ jobs:
         password: ${{ secrets.DOCKER_TOKEN }}
     
     - name: Build Postgre Image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/postgre:latest -f DockerDB/Dockerfile .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/postgre:v${{ github.run_number }} -f DockerDB/Dockerfile .
       working-directory: .
         
     - name: Build App Image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/app:latest .
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/app:v${{ github.run_number }} .
 
     - name: Push App image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/app:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/app:v${{ github.run_number }}
 
     - name: Push Postgre Image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/postgre:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/postgre:v${{ github.run_number }}
   update:
       needs: build-and-push
       runs-on: ubuntu-latest
