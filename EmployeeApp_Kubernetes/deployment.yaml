@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: springapp-config
+  namespace: springapp
+data:
+  application.properties: |
+    spring.datasource.url=jdbc:postgresql://postgre-service:5432/aplikacija
+    spring.datasource.username=app
+    spring.jpa.hibernate.ddl-auto=update
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: springapp-secret
+  namespace: springapp
+type: Opaque
+data:
+  spring.datasource.password: MTIzNDU=
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app
+  namespace: springapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springapp-pod
+  template:
+    metadata:
+      labels:
+        app: springapp-pod
+    spec:
+      containers:
+        - name: spring
+          image: kristina212006/app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: /etc/config/
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: springapp-secret
+                  key: spring.datasource.password
+          volumeMounts:
+            - name: springapp-config-volume
+              mountPath: /etc/config
+              readOnly: true
+            - name: springapp-secret-volume
+              mountPath: /etc/secret
+              readOnly: true
+      volumes:
+        - name: springapp-config-volume
+          configMap:
+            name: springapp-config
+        - name: springapp-secret-volume
+          secret:
+            secretName: springapp-secret
