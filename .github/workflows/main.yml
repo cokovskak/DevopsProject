@@ -45,8 +45,8 @@ jobs:
           run: |
             git config user.email cokovskak@gmail.com
             git config user.name kristina
-            sed -i "s+kristina212006/app.*+kristina212006/app:v$RUN_NUMBER+g" deployment.yaml
-            sed -i "s+kristina212006/postgre.*+kristina212006/postgre:v$RUN_NUMBER+g" statefulset.yaml
+            sed -i "s+kristina212006/app.*+kristina212006/app:latest+g" deployment.yaml
+            sed -i "s+kristina212006/postgre.*+kristina212006/postgre:latest+g" statefulset.yaml
             git add .
             git status
             git commit -m "Changed manifests ${{ github.run_number }}"
